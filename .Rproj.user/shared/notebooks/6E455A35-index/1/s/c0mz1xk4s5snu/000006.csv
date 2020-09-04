@@ -1,0 +1,304 @@
+"0","##ONLY NEED TO RUN ONCE, LOAD DATA FROM THE CSVs"
+"0",""
+"0","myfiles <- list.files(path=""Data"", pattern=""*.xlsx"", full.names=TRUE)"
+"0",""
+"0","DietList <- c(""100N"", ""0Ile"", ""25Thr"", ""0N"", ""R100N"", ""R0Ile"", ""R25Thr"", ""R0N"")"
+"0",""
+"0","##collecting the TAG data from the spreadsheets"
+"0",""
+"0","HeadListT <- c(""Run"", ""Diet"", ""Tag1"", ""Tag2"", ""Tag3"", ""Blank"")"
+"0",""
+"0","TAGData <- data.frame(matrix(vector(),ncol=6))"
+"0","colnames(TAGData) <- HeadListT"
+"0",""
+"0","datasliceT <- function(data) {"
+"0","  data <- data[c(10:17),c(2:4,8)]"
+"0","  names(data)[1] <- ""Tag1"""
+"0","  names(data)[2] <- ""Tag2"""
+"0","  names(data)[3] <- ""Tag3"""
+"0","  names(data)[4] <- ""Blank"""
+"0","  mutate(data, Diet = DietList) %>% "
+"0","    mutate(Run = myfiles[i]) %>%"
+"0","    select(HeadListT)"
+"0","}"
+"0",""
+"0","for (i in 1:length(myfiles)){"
+"0","  temp1 <- assign(myfiles[i], read_excel(myfiles[i]))"
+"0","  temp2 <- datasliceT(temp1)"
+"0","  TAGData <- rbind(TAGData, temp2)"
+"0","  }"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","Note: Using an external vector in selections is ambiguous.
+[34mi[39m Use `all_of(HeadListT)` instead of `HeadListT` to silence this message.
+[34mi[39m See <https://tidyselect.r-lib.org/reference/faq-external-vector.html>.
+[90mThis message is displayed once per session.[39m
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"0","TAGData[3:6] <- lapply(TAGData[3:6], as.double)"
+"0",""
+"0",""
+"0","write.csv(TAGData, ""Data/TAGData.csv"", row.names = FALSE)"
+"0",""
+"0",""
+"0","##collecting the Protein data from the spreadsheets"
+"0",""
+"0","HeadListP <- c(""Run"", ""Diet"", ""Pro1"", ""Pro2"", ""Pro3"")"
+"0",""
+"0","PROData <- data.frame(matrix(vector(),ncol=5))"
+"0","colnames(PROData) <- HeadListP"
+"0",""
+"0","datasliceP <- function(data) {"
+"0","  data <- data[c(24:31),c(5:7)]"
+"0","  names(data)[1] <- ""Pro1"""
+"0","  names(data)[2] <- ""Pro2"""
+"0","  names(data)[3] <- ""Pro3"""
+"0","  mutate(data, Diet = DietList) %>% "
+"0","    mutate(Run = myfiles[i]) %>%"
+"0","    select(HeadListP)"
+"0","}"
+"0",""
+"0","for (i in 1:length(myfiles)){"
+"0","  temp1 <- assign(myfiles[i], read_excel(myfiles[i]))"
+"0","  temp2 <- datasliceP(temp1)"
+"0","  PROData <- rbind(PROData, temp2)"
+"0","  }"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","Note: Using an external vector in selections is ambiguous.
+[34mi[39m Use `all_of(HeadListP)` instead of `HeadListP` to silence this message.
+[34mi[39m See <https://tidyselect.r-lib.org/reference/faq-external-vector.html>.
+[90mThis message is displayed once per session.[39m
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"0","PROData[3:5] <- lapply(PROData[3:5], as.double)"
+"0",""
+"0",""
+"0","write.csv(PROData, ""Data/PROData.csv"", row.names = FALSE)"
+"0",""
+"0","##collecting the TAG standard curves from the spreadsheets"
+"0",""
+"0","StandListT <- c(0.801484375, 0.4007421875, 0.2003710938, 0.1001855469, 0.05009277344, 0.02504638672, 0.01252319336, 0.00626159668, 0.00313079834, 0)"
+"0","HeadListST <- c(""Run"", ""Conc"", ""Abs"")"
+"0",""
+"0","StandTAG <- data.frame(matrix(vector(),ncol=3))"
+"0","colnames(StandTAG) <- HeadListST"
+"0",""
+"0","datasliceST <- function(data) {"
+"0","  data1 <- data[c(10),c(10:13)]"
+"0","  data1 <- pivot_longer(data1, 1:4)"
+"0","  data2 <- data[c(11),c(10:13)]"
+"0","  data2 <- pivot_longer(data2, 1:4)"
+"0","  data3 <- data[c(12),c(10:11)]"
+"0","  data3 <- pivot_longer(data3, 1:2)"
+"0","  data <- rbind(data1, data2, data3)"
+"0","  mutate(data, Conc = StandListT) %>% "
+"0","    mutate(Run = myfiles[i]) %>%"
+"0","    rename(Abs = value) %>%"
+"0","    select(HeadListST)"
+"0","}"
+"0",""
+"0","for (i in 1:length(myfiles)){"
+"0","  temp1 <- assign(myfiles[i], read_excel(myfiles[i]))"
+"0","  temp2 <- datasliceST(temp1)"
+"0","  StandTAG <- rbind(StandTAG, temp2)"
+"0","  }"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","Note: Using an external vector in selections is ambiguous.
+[34mi[39m Use `all_of(HeadListST)` instead of `HeadListST` to silence this message.
+[34mi[39m See <https://tidyselect.r-lib.org/reference/faq-external-vector.html>.
+[90mThis message is displayed once per session.[39m
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"0","StandTAG[2:3] <- lapply(StandTAG[2:3], as.double)"
+"0",""
+"0",""
+"0","write.csv(StandTAG, ""Data/StandTAG.csv"", row.names = FALSE)"
+"0",""
+"0","##collecting the TAG standard curves from the spreadsheets"
+"0",""
+"0","StandListP <- c(2, 1, 0.5, 0.25, 0.125, 0.0625, 0.0313, 0)"
+"0","HeadListSP <- c(""Run"", ""Conc"", ""Abs"")"
+"0",""
+"0","StandPRO <- data.frame(matrix(vector(),ncol=3))"
+"0","colnames(StandPRO) <- HeadListSP"
+"0",""
+"0","datasliceSP <- function(data) {"
+"0","  data1 <- data[c(30),c(10:13)]"
+"0","  data1 <- pivot_longer(data1, 1:4)"
+"0","  data2 <- data[c(31),c(10:13)]"
+"0","  data2 <- pivot_longer(data2, 1:4)"
+"0","  data <- rbind(data1, data2)"
+"0","  mutate(data, Conc = StandListP) %>% "
+"0","    mutate(Run = myfiles[i]) %>%"
+"0","    rename(Abs = value) %>%"
+"0","    select(HeadListSP)"
+"0","}"
+"0",""
+"0","for (i in 1:length(myfiles)){"
+"0","  temp1 <- assign(myfiles[i], read_excel(myfiles[i]))"
+"0","  temp2 <- datasliceSP(temp1)"
+"0","  StandPRO <- rbind(StandPRO, temp2)"
+"0","  }"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","Note: Using an external vector in selections is ambiguous.
+[34mi[39m Use `all_of(HeadListSP)` instead of `HeadListSP` to silence this message.
+[34mi[39m See <https://tidyselect.r-lib.org/reference/faq-external-vector.html>.
+[90mThis message is displayed once per session.[39m
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+* `` -> ...6
+* ...
+"
+"0","StandPRO[2:3] <- lapply(StandPRO[2:3], as.double)"
+"0",""
+"0",""
+"0","write.csv(StandPRO, ""Data/StandPRO.csv"", row.names = FALSE)"
+"0",""

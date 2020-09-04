@@ -1,0 +1,5 @@
+"0","##Reading in CSVs"
+"0","TAGData <- read.csv(""Data/TAGData.csv"")"
+"0","PROData <- read.csv(""Data/PROData.csv"")"
+"0","StandTAG <- read.csv(""Data/StandTAG.csv"")"
+"0","StandPRO <- read.csv(""Data/StandPRO.csv"")"

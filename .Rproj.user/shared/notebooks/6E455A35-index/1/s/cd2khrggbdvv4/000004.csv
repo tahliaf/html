@@ -1,0 +1,4 @@
+"0",""
+"0",""
+"0","PROCurve <- lm(Abs ~ Conc, StandPRO)"
+"0","tidy(PROCurve)"

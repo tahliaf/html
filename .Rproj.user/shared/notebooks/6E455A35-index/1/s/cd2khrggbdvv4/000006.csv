@@ -1,0 +1,6 @@
+"0",""
+"0","ggplot(StandPRO, aes(Conc, Abs, color = Run)) +"
+"0","  geom_point() +"
+"0","  geom_smooth(se = F) +"
+"0","  labs(y = ""Absorbance at 562nm (Protein)"","
+"0","       x = ""Concentration of BSA (mg/mL)"") "

@@ -51,7 +51,7 @@ ggplot(StandTAG, aes(Conc, Abs)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](Results-TAG_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-1.png)<!-- -->
+![](index_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-1.png)<!-- -->
 
 ``` r
 PROCurve <- lm(Abs ~ Conc, StandPRO)
@@ -74,7 +74,7 @@ ggplot(StandPRO, aes(Conc, Abs, color = Run)) +
 
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-![](Results-TAG_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-2.png)<!-- -->
+![](index_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-2.png)<!-- -->
 
 ``` r
 subStandPRO <- StandPRO %>% subset(Conc != "2")
@@ -90,7 +90,7 @@ ggplot(subStandPRO, aes(Conc, Abs, color = Run)) +
 
     ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 
-![](Results-TAG_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-3.png)<!-- -->
+![](index_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-3.png)<!-- -->
 \#\# TAG content of flies
 
 (stats are below plots)
@@ -103,7 +103,7 @@ fat than 25Thr and 100N flies
 going? the flies are still eating but are not laying eggs…. why aren’t
 they fat?)
 
-![](Results-TAG_files/figure-gfm/TAG%20plot-1.png)<!-- --> \#\# Protein
+![](index_files/figure-gfm/TAG%20plot-1.png)<!-- --> \#\# Protein
 content of flies
 
 Again, just looking at the data, looks like 0Ile and 0N flies have less
@@ -113,7 +113,7 @@ eggs, so they would be eating excess protein, except you know.. for the
 flies that aren’t even eating any protein….. I’m not sure what I think
 about this result yet
 
-![](Results-TAG_files/figure-gfm/Protein%20Plot-1.png)<!-- --> \#\# TAG
+![](index_files/figure-gfm/Protein%20Plot-1.png)<!-- --> \#\# TAG
 normalised to protein
 
 I actually looked at the stats for this plot before I looked at the plot
@@ -127,8 +127,8 @@ Overall, I don’t think that fat levels are associating with the
 phenotype that I am seeing (I would have expected to see 0Ile and 25Thr
 somehow pattern together in the results, which is not the case)
 
-![](Results-TAG_files/figure-gfm/Normalised%20Plot-1.png)<!-- --> Here
-are the stats:
+![](index_files/figure-gfm/Normalised%20Plot-1.png)<!-- --> Here are the
+stats:
 
 Please feel free to suggest another way to analyse the data if this
 isn’t the best way. I really want to stress how incompetent I am at
