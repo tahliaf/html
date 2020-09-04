@@ -23,75 +23,32 @@ which were analysed as technical triplicates
 
 ## Results
 
-TAG standard curve: - Consistent across plates - Decision to take the
-coefficients of this line to solve for all TAG samples
+TAG standard curve:
 
-Protein standard curve: - Loses linearity at higher concentrations -
-Absorbance of samples is \< absorbance of 1mg/mL BSA - Removed 2mg/mL
-from standard curve - Linearity improved, but differences between plates
-are noticeable (did not test statistically) - Decision to use the
-standard curve from the same plate as the samples - Made a sweet for
-loop to do this automatically
+  - Consistent across plates
 
-``` r
-## y = mx + c 
-## Conc estimate = m = tidy[2,2]
-## intercept estimate = c = tidy[1,2]
+  - Decision to take the coefficients of this line to solve for all TAG
+    samples
 
-TAGCurve <- lm(Abs ~ Conc, StandTAG)
-TM <- as.double(tidy(TAGCurve)[2,2])
-TC <- as.double(tidy(TAGCurve)[1,2])
+Protein standard curve:
 
-ggplot(StandTAG, aes(Conc, Abs)) +
-  geom_point() +
-  stat_smooth(method = "lm", col = "red") +
-  labs(y = "Absorbance at 540nm (TAG)",
-       x = "Concentration of glycerol (mg/mL)") 
-```
+  - Loses linearity at higher concentrations
 
-    ## `geom_smooth()` using formula 'y ~ x'
+  - Absorbance of samples is \< absorbance of 1mg/mL BSA
 
-![](index_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-1.png)<!-- -->
+  - Removed 2mg/mL from standard curve
 
-``` r
-PROCurve <- lm(Abs ~ Conc, StandPRO)
-tidy(PROCurve)
-```
+  - Linearity improved, but differences between plates are noticeable
+    (did not test statistically)
 
-    ## # A tibble: 2 x 5
-    ##   term        estimate std.error statistic  p.value
-    ##   <chr>          <dbl>     <dbl>     <dbl>    <dbl>
-    ## 1 (Intercept)   0.0769   0.00772      9.97 3.75e-12
-    ## 2 Conc          0.171    0.00945     18.1  2.99e-20
+  - Decision to use the standard curve from the same plate as the
+    samples
 
-``` r
-ggplot(StandPRO, aes(Conc, Abs, color = Run)) +
-  geom_point() +
-  geom_smooth(se = F) +
-  labs(y = "Absorbance at 562nm (Protein)",
-       x = "Concentration of BSA (mg/mL)") 
-```
+  - Made a sweet for loop to do this automatically
 
-    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+![](index_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-1.png)<!-- -->![](index_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-2.png)<!-- -->![](index_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-3.png)<!-- -->
 
-![](index_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-2.png)<!-- -->
-
-``` r
-subStandPRO <- StandPRO %>% subset(Conc != "2")
-
-subPROCurve <- lm(Abs ~ Conc, subStandPRO)
-
-ggplot(subStandPRO, aes(Conc, Abs, color = Run)) +
-  geom_point() +
-  geom_smooth(se = F) +
-  labs(y = "Absorbance at 562nm (Protein)",
-       x = "Concentration of BSA (mg/mL)/nReomved 2mg/mL to improve linearity") 
-```
-
-    ## `geom_smooth()` using method = 'loess' and formula 'y ~ x'
-
-![](index_files/figure-gfm/Models%20for%20TAG%20and%20PRO%20standard%20curves-3.png)<!-- -->
-\#\# TAG content of flies
+## TAG content of flies
 
 (stats are below plots)
 
@@ -103,8 +60,9 @@ fat than 25Thr and 100N flies
 going? the flies are still eating but are not laying eggs…. why aren’t
 they fat?)
 
-![](index_files/figure-gfm/TAG%20plot-1.png)<!-- --> \#\# Protein
-content of flies
+![](index_files/figure-gfm/TAG%20plot-1.png)<!-- -->
+
+## Protein content of flies
 
 Again, just looking at the data, looks like 0Ile and 0N flies have less
 protein than 25Thr and 100N flies, but including rapamycin in the diet
@@ -113,8 +71,9 @@ eggs, so they would be eating excess protein, except you know.. for the
 flies that aren’t even eating any protein….. I’m not sure what I think
 about this result yet
 
-![](index_files/figure-gfm/Protein%20Plot-1.png)<!-- --> \#\# TAG
-normalised to protein
+![](index_files/figure-gfm/Protein%20Plot-1.png)<!-- -->
+
+## TAG normalised to protein
 
 I actually looked at the stats for this plot before I looked at the plot
 itself and was a little disappointed The stats imply that none of these
@@ -127,8 +86,9 @@ Overall, I don’t think that fat levels are associating with the
 phenotype that I am seeing (I would have expected to see 0Ile and 25Thr
 somehow pattern together in the results, which is not the case)
 
-![](index_files/figure-gfm/Normalised%20Plot-1.png)<!-- --> Here are the
-stats:
+![](index_files/figure-gfm/Normalised%20Plot-1.png)<!-- -->
+
+### Here are the stats:
 
 Please feel free to suggest another way to analyse the data if this
 isn’t the best way. I really want to stress how incompetent I am at
@@ -139,6 +99,21 @@ had “click” for me yet\! One day… (maybe)
 ``` r
 lmTAG <- lm(Conc ~ Diet*Rapa, data = TAGData1)
 lmTAG.a <- aov(lmTAG)
+lmTAG.a
+```
+
+    ## Call:
+    ##    aov(formula = lmTAG)
+    ## 
+    ## Terms:
+    ##                         Diet         Rapa    Diet:Rapa    Residuals
+    ## Sum of Squares  0.0002307525 0.0000001582 0.0000185255 0.0016172615
+    ## Deg. of Freedom            3            1            3          112
+    ## 
+    ## Residual standard error: 0.003799978
+    ## Estimated effects may be unbalanced
+
+``` r
 TukeyHSD(lmTAG.a)
 ```
 
@@ -194,6 +169,21 @@ TukeyHSD(lmTAG.a)
 ``` r
 lmPRO <- lm(Conc ~ Diet*Rapa, data = PROData1)
 lmPRO.a <- aov(lmPRO)
+lmPRO.a 
+```
+
+    ## Call:
+    ##    aov(formula = lmPRO)
+    ## 
+    ## Terms:
+    ##                        Diet        Rapa   Diet:Rapa   Residuals
+    ## Sum of Squares  0.001153651 0.000298301 0.000017106 0.004384269
+    ## Deg. of Freedom           3           1           3         112
+    ## 
+    ## Residual standard error: 0.006256617
+    ## Estimated effects may be unbalanced
+
+``` r
 TukeyHSD(lmPRO.a)
 ```
 
@@ -249,6 +239,21 @@ TukeyHSD(lmPRO.a)
 ``` r
 lmNorm <- lm(NormConc ~ Diet*Rapa, data = NormData)
 lmNorm.a <- aov(lmNorm)
+lmNorm.a
+```
+
+    ## Call:
+    ##    aov(formula = lmNorm)
+    ## 
+    ## Terms:
+    ##                     Diet     Rapa Diet:Rapa Residuals
+    ## Sum of Squares  0.221776 0.154948  0.061210  7.806591
+    ## Deg. of Freedom        3        1         3       112
+    ## 
+    ## Residual standard error: 0.2640108
+    ## Estimated effects may be unbalanced
+
+``` r
 TukeyHSD(lmNorm.a)
 ```
 

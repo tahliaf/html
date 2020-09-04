@@ -178,18 +178,26 @@ StandPRO <- read.csv("Data/StandPRO.csv")
 ## Results
 
 TAG standard curve: 
+
 - Consistent across plates
+
 - Decision to take the coefficients of this line to solve for all TAG samples
 
 Protein standard curve:
+
 - Loses linearity at higher concentrations
+
 - Absorbance of samples is < absorbance of 1mg/mL BSA
+
 - Removed 2mg/mL from standard curve
+
 - Linearity improved, but differences between plates are noticeable (did not test statistically)
+
 - Decision to use the standard curve from the same plate as the samples
+
 - Made a sweet for loop to do this automatically
 
-```{r Models for TAG and PRO standard curves, echo=TRUE}
+```{r Models for TAG and PRO standard curves, echo=FALSE, results = FALSE, message=FALSE, warning = FALSE}
 ## y = mx + c 
 ## Conc estimate = m = tidy[2,2]
 ## intercept estimate = c = tidy[1,2]
@@ -222,10 +230,11 @@ ggplot(subStandPRO, aes(Conc, Abs, color = Run)) +
   geom_point() +
   geom_smooth(se = F) +
   labs(y = "Absorbance at 562nm (Protein)",
-       x = "Concentration of BSA (mg/mL)/nReomved 2mg/mL to improve linearity") 
+       x = "Concentration of BSA (mg/mL)\nReomved 2mg/mL to improve linearity") 
 
 
 ```
+
 ## TAG content of flies
 
 (stats are below plots)
@@ -270,6 +279,7 @@ TAGPlot <- ggplot(TagMean, aes(x = Diet, y = mean, fill = Rapa)) +
 TAGPlot
 
 ```
+
 ## Protein content of flies
 
 Again, just looking at the data, looks like 0Ile and 0N flies have less protein than 25Thr and 100N flies, but including rapamycin in the diet increases their total protein amount. So rapa fed flies also don't lay eggs, so they would be eating excess protein, except you know.. for the flies that aren't even eating any protein..... I'm not sure what I think about this result yet
@@ -323,6 +333,7 @@ PROPlot <- ggplot(PROMean, aes(x = Diet, y = mean, fill = Rapa)) +
 PROPlot
 
 ```
+
 ## TAG normalised to protein
 
 I actually looked at the stats for this plot before I looked at the plot itself and was a little disappointed
@@ -356,7 +367,9 @@ NormPlot
 
 
 ```
-Here are the stats: 
+
+
+### Here are the stats: 
 
 Please feel free to suggest another way to analyse the data if this isn't the best way. I really want to stress how incompetent I am at statistics specifically (absolutely no formal training in it, holding out for an online stats workshop) - it's just not something that I've had "click" for me yet! One day... (maybe)
 
@@ -364,14 +377,17 @@ Please feel free to suggest another way to analyse the data if this isn't the be
 ```{r stats, echo=TRUE}
 lmTAG <- lm(Conc ~ Diet*Rapa, data = TAGData1)
 lmTAG.a <- aov(lmTAG)
+lmTAG.a
 TukeyHSD(lmTAG.a)
 
 lmPRO <- lm(Conc ~ Diet*Rapa, data = PROData1)
 lmPRO.a <- aov(lmPRO)
+lmPRO.a 
 TukeyHSD(lmPRO.a)
 
 lmNorm <- lm(NormConc ~ Diet*Rapa, data = NormData)
 lmNorm.a <- aov(lmNorm)
+lmNorm.a
 TukeyHSD(lmNorm.a)
 ```
 
